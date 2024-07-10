@@ -9,60 +9,66 @@ class Book {
 
 const library = [];
 
-// const addBook = book => { library.push(book) };
-const removeBook = id => {
-    const index = library.findIndex(book => book.id === id);
-    if (index !== -1) {
+
+const removeBook = () => {
+    let id = prompt("Por favor, introduzca un ID válido:");
+    if(id !== null){
+        index = library.findIndex(book => book.id === id);
+        while(index === -1){
+            let id = prompt("Por favor, introduzca un ID válido:");
+            index = library.findIndex(book => book.id === id);
+        }
         library.splice(index, 1);
-    } else{
-        
     }
 };
+
+// Funcion que imprime los libros por consola
 const viewLibrary = () => { 
-    library.forEach((book, index) =>{
-        console.log(index + 1)
-        console.log(book.title);
-        console.log(book.author);
-        console.log("------------------")
+    let alertMessage = "";
+    library.forEach(book =>{
+        alertMessage += "\nID:" + book.id + "\nTitulo" + book.title + "\nAutor" + book.author + "\n-------------------" ;
     })
+    alert(alertMessage);
  };
 
-// Function to create a book from user input
+// Funcion que crea y agrega los libros al arry de libreria
 const createBookFromPrompt = () => {
-    const id = parseInt(prompt("Introduce el ID del libro:"));
+    const id = prompt("Introduce el ID del libro:");
     const title = prompt("Introduce el título del libro:");
     const author = prompt("Introduce el autor del libro:");
     let book = new Book(id, title, author);
     library.push(book)
 };
 
-// Example usage
-// const book1 = createBookFromPrompt();
-// addBook(book1);
-// viewLibrary();
-
-let pass = false;
-
-do {
-    let option;
-    option = prompt("escoja alguna de las siguientes opciones ingresando el numero: \n 1- Agregar un libro \n 2- Borrar un libro \n 3- Ver libros en inventario \n 4- Salir");
+let pass;
+function handleOption(option) {
     switch (option) {
-        case 1:
+        case '1':
             createBookFromPrompt();
             break;
 
-        case 2:
+        case '2':
             removeBook();
             break;
 
-        case 3:
+        case '3':
             viewLibrary();
             break;
 
-        case 4:
-        break;
-
         default:
-        option = prompt("OPCION INVALIDA! \n escoja alguna de las siguientes opciones ingresando el numero: \n 1- Agregar un libro \n 2- Borrar un libro \n 3- Ver libros en inventario");;
+            alert("¡OPCIÓN INVÁLIDA!");
+            return false;
+    }
+    return true;
+}
+
+do {
+    let option = prompt("Escoja alguna de las siguientes opciones ingresando el número: \n 1- Agregar un libro \n 2- Borrar un libro \n 3- Ver libros en inventario");
+    if(option !== null){
+        if(handleOption(option)){
+            pass = confirm("¿Desea realizar otra acción?");
+        } else{
+            pass = true;
+        }
     }
 } while (pass);
